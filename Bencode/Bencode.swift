@@ -85,7 +85,7 @@ func decodeBItem(str: String) -> (Any, String)? {
     return  (retValue, retString)
 }
 
-func bDecode(str: String) -> Any? {
+public func parse(str: String) -> Any? {
     if let (obj, emptyStr) = decodeBItem(str) {
         if emptyStr != "" {
             return nil
@@ -106,7 +106,7 @@ func bencodeInt(x: Int) -> String {
     return "i\(x)e"
 }
 
-func bencode(item: Any) -> String {
+public func serialize(item: Any) -> String {
     switch item {
     case let x as Int:
         return bencodeInt(x)
@@ -115,7 +115,7 @@ func bencode(item: Any) -> String {
     case let arr as [Any]:
         var str = "l"
         for element in arr {
-            str += bencode(element)
+            str += serialize(element)
         }
         str += "e"
         return str
@@ -123,7 +123,7 @@ func bencode(item: Any) -> String {
         var str = "d"
         for (key, value) in dict {
             str += bencodeString(key)
-            str += bencode(value)
+            str += serialize(value)
         }
         str += "e"
         return str
